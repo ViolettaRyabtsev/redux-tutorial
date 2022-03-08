@@ -1,23 +1,39 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Header from "./components/Header";
+import { createContext, useState, useReducer, useEffect, useRef } from "react";
+
+// import ProductComponent from "./components/ProductComponent";
+import ProductDetails from "./components/ProductDetail";
+import ContactUs from "./components/ContactUs";
+import ListOfProducts from "./components/ListOfProducts";
+//design store
+//define actions
+// create a reducer
+// set up the store
+
+export const NoteContext = createContext([]);
 
 function App() {
+  const [notes, setNotes] = useState(["bla", "bkfdf"]);
+
+  const renderCount = useRef(0);
+
+  useEffect(() => {
+    renderCount.current = renderCount.current + 1;
+  });
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Header />
+      <NoteContext.Provider value={notes}>
+        <Routes>
+          <Route path="/" element={<ListOfProducts />} />
+          <Route path="/:id" element={<ProductDetails />} />
+          <Route path="/contact" element={<ContactUs />} />
+        </Routes>
+        <div> i rendered {renderCount.current} times </div>
+      </NoteContext.Provider>
     </div>
   );
 }
